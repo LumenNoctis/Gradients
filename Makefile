@@ -1,24 +1,48 @@
-NAME = #Program-name
-FLAGS = #Compile flags -Wall -Wextra -Werror
+NAME = gradient
+FLAGS = -Wall -Wextra -Werror
 
-FILENAMES = #Source files names (no extension or path)
+LERP_FILES = 		\
+		lerp		\
+
+SDT_FILES = 		\
+		SDT_init	\
+		SDT_render	\
+		SDT			\
+
+
 INCL = -I incl/
 LIB = -L ~/.brew/lib -l SDL2 -l sdl2_image
+
+
+O_DIR = objs/
+
+FILENAMES = 							\
+	$(addprefix Lerp/, $(LERP_FILES))	\
+	$(addprefix SDT/, $(SDT_FILES))		\
+	gradient							\
+	main								\
+	utils								\
+
 
 SRCS = $(addprefix srcs/, $(addsuffix .c, $(FILENAMES)))
 OBJS = $(addprefix objs/, $(addsuffix .o, $(FILENAMES)))
 
-all : $(NAME)
+$(SRCS): %.c
+	@echo $<
 
-objs/%.o : srcs/%.c
-	@/bin/mkdir -p objs
-	gcc $(FLAGS) -c $(INCL) $< -o $@
+# $()%.o: %.c
+# 	echo $(SRCS)
+# 	@/bin/mkdir -p $(O_DIR)$(dir $<)
+# 	gcc $(FLAGS) -c $(INCL) $< -o $@
 
-$(NAME): $(OBJS)
-	gcc $(FLAGS) $(INCL) $(LIB) $(OBJS) -o $(NAME)
+all : $(SRCS)
+
+# $(NAME):$(OBJS)
+# 	gcc $(FLAGS) $(INCL) $(LIB) $(OBJS) -o $(NAME)
 
 clean :
 	rm -f $(OBJS)
+	rm -rf $(O_DIR)
 
 fclean : clean
 	rm -rf $(NAME)

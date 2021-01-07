@@ -4,7 +4,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <math.h>
-# include "g_structs.h"
+# include "SDT.h"
 
 
 #endif
