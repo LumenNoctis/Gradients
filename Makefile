@@ -14,7 +14,8 @@ INCL = -I incl/
 LIB = -L ~/.brew/lib -l SDL2 -l sdl2_image
 
 
-O_DIR = objs/
+SRC_DIR = src/
+BIN_DIR = bin/
 
 FILENAMES = 							\
 	$(addprefix Lerp/, $(LERP_FILES))	\
@@ -24,34 +25,26 @@ FILENAMES = 							\
 	utils								\
 
 
-SRCS = $(addprefix srcs/, $(addsuffix .c, $(FILENAMES)))
-OBJS = $(addprefix objs/, $(addsuffix .o, $(FILENAMES)))
+SRCS = $(addprefix $(SRC_DIR), $(addsuffix .c, $(FILENAMES)))
+OBJS = $(addprefix $(BIN_DIR), $(addsuffix .o, $(FILENAMES)))
 
-$(SRCS): %.c
-	@echo $<
 
-# $()%.o: %.c
-# 	echo $(SRCS)
-# 	@/bin/mkdir -p $(O_DIR)$(dir $<)
-# 	gcc $(FLAGS) -c $(INCL) $< -o $@
+all: $(NAME)
 
-all : $(SRCS)
+$(NAME): $(BIN_DIR) $(OBJS)
+	gcc $(FLAGS) $(INCLUDES) -o $(NAME) $(OBJS) $(SDL_LIB)
 
-# $(NAME):$(OBJS)
-# 	gcc $(FLAGS) $(INCL) $(LIB) $(OBJS) -o $(NAME)
+$(BIN_DIR):
+	mkdir -p $(BIN_DIR)
 
-clean :
+$(BIN_DIR)%.o: %.c
+	mkdir -p $(BIN_DIR)$(dir $<)
+	gcc $(FLAGS) $(INCLUDES) -c $< -o $@
+
+clean:
 	rm -f $(OBJS)
-	rm -rf $(O_DIR)
 
-fclean : clean
+fclean: clean
 	rm -rf $(NAME)
 
-push : clean
-	git add .
-	git commit -m "$(MSG)"
-	git push origin master
-
-re : fclean all
-
-.PHONY : $(NAME) clean fclean push re
+re: fclean all
