@@ -1,4 +1,4 @@
-#include "gradient.h"
+#include "../incl/gradient.h"
 
 int main()
 {

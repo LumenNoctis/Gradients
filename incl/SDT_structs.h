@@ -1,6 +1,9 @@
 #ifndef SDT_DEF_H
 # define SDT_DEF_H
 
+# include <SDL2/SDL_image.h>
+# include <SDL2/SDL.h>
+
 # define WIN_NAME "Default"
 # define WIN_X 0
 # define WIN_Y 0
@@ -20,7 +23,7 @@ typedef union       SDT_RGBA
 		uint8_t 	g;
 		uint8_t 	b;
 		uint8_t 	a;
-	}				color_data;
+	}				data;
 }					SDT_RGBA;
 
 typedef struct

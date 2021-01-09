@@ -1,12 +1,14 @@
 #ifndef SDT_H
 # define SDT_H
 
-# include <SDL2/SDL.h>
+
 # include <stdbool.h>
 
 # include "SDT_structs.h"
 
 void        SDT_Update();
+
+void 		render_gradient(int ncolors);
 
 SDT_Scene   *SDT_GetScene();
 

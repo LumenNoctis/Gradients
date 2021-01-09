@@ -1,5 +1,5 @@
 NAME = gradient
-FLAGS = -Wall -Wextra -Werror
+FLAGS =
 
 LERP_FILES = 		\
 		lerp		\
@@ -10,11 +10,11 @@ SDT_FILES = 		\
 		SDT			\
 
 
-INCL = -I incl/
+INCLUDES = -I incl/ -I ~/.brew/include/
 LIB = -L ~/.brew/lib -l SDL2 -l sdl2_image
 
 
-SRC_DIR = src/
+SRC_DIR = srcs/
 BIN_DIR = bin/
 
 FILENAMES = 							\
@@ -31,8 +31,8 @@ OBJS = $(addprefix $(BIN_DIR), $(addsuffix .o, $(FILENAMES)))
 
 all: $(NAME)
 
-$(NAME): $(BIN_DIR) $(OBJS)
-	gcc $(FLAGS) $(INCLUDES) -o $(NAME) $(OBJS) $(SDL_LIB)
+$(NAME):
+	gcc $(FLAGS) $(INCLUDES) -o $(NAME) $(SRCS) $(LIB)
 
 $(BIN_DIR):
 	mkdir -p $(BIN_DIR)
@@ -40,6 +40,9 @@ $(BIN_DIR):
 $(BIN_DIR)%.o: %.c
 	mkdir -p $(BIN_DIR)$(dir $<)
 	gcc $(FLAGS) $(INCLUDES) -c $< -o $@
+
+run: re
+	./$(NAME)
 
 clean:
 	rm -f $(OBJS)

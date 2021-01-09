@@ -1,4 +1,4 @@
-#include "gradient.h"
+#include "../../incl/SDT.h"
 
 void SDT_InputLoop(void)
 {
@@ -16,9 +16,10 @@ void SDT_RenderLoop(void)
 	SDT_Scene *scene;
 
 	scene = SDT_GetScene();
+	render_gradient(50);
 	SDL_RenderPresent(scene->renderer);
-	SDL_RenderClear(scene->renderer);
 	SDL_SetRenderDrawColor(scene->renderer, 0, 0, 0, 255);
+	// SDL_RenderClear(scene->renderer);
 }
 
 void SDT_Update(void)

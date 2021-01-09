@@ -5,6 +5,10 @@
 # include <stdlib.h>
 # include <math.h>
 # include "SDT.h"
+# include "lerp.h"
+
+int *gradient(int from, int to, int ncolors);
+
 
 
 #endif
