@@ -22,7 +22,7 @@ struct glerp
 typedef struct	s_gradient
 {
 	int 			ncolors;
-	struct	glerp 	*grad_lerp;
+	struct	glerp 	*g_lerp;
 }					t_gradient;
 
 int *gradient(int from, int to, int ncolors);

@@ -6,6 +6,7 @@ SDL_texture *render_grad_texture(t_gradient *grad, int ncolors, int h, int w)
 	int m;
 	int i;
 	int col;
+	int t;
 
 	SDT_RGBA color;
 
@@ -27,7 +28,7 @@ SDL_texture *render_grad_texture(t_gradient *grad, int ncolors, int h, int w)
 	rect.h = h;
 	rect.w = w / ncolors;
 	rect.y = 0;
-	rect.x = 0;
+	rect.x = m;
 	surf = SDL_CreateRGBSurface(0, w, h, 32, 0, 0, 0, 0);
 	renderer = SDT_GetScene()->renderer;
 
@@ -35,6 +36,8 @@ SDL_texture *render_grad_texture(t_gradient *grad, int ncolors, int h, int w)
 	curve.width = 3;
 	curve.center = 0;
 	curve.height = 5;
+
+	color.a = 255;
 
 	gauss_matrix(curve, GAUSS_X_DIST, GAUSS_Y_DIST);
 
@@ -44,19 +47,27 @@ SDL_texture *render_grad_texture(t_gradient *grad, int ncolors, int h, int w)
 		p_end = grad[i].span_end * w;
 		while (p_end >= rect.x)
 		{
-			t = 
+			t = 100/ num_Scale(rect.x, p_start, p_end, grad.g_lerp[i].start, grad.g_lerp[i].end)//Scale position from span to start-end, and divide 100 by it
 			color.r = lerp(
-						((SDT_RGBA)grad.grad_lerp[i].start).data.r,
-						((SDT_RGBA)grad.grad_lerp[i].end).data.r,
-						p_end - rect.x);
-			
-			SDL_FillRect(surf, &rect, color);
+						((SDT_RGBA)grad.g_lerp[i].start).data.r,
+						((SDT_RGBA)grad.g_lerp[i].end).data.r,
+						t);
+			color.g = lerp(
+						((SDT_RGBA)grad.g_lerp[i].start).data.r,
+						((SDT_RGBA)grad.g_lerp[i].end).data.r,
+						t);
+			color.g = lerp(
+						((SDT_RGBA)grad.g_lerp[i].start).data.r,
+						((SDT_RGBA)grad.g_lerp[i].end).data.r,
+						t);
+			//Copy paste for all colors
+			SDL_FillRect(surf, &rect, color); //Color here might need to be created wth SDL func, see doc
 			rect.x += m;
 		}
 		i++;
 	}
 	result = SDL_CreateTextureFromSurface(renderer, surf);
 	SDL_FreeSurface(surf);
-
+	//Add Blurr here
 	return result;
 }
