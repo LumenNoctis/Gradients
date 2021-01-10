@@ -23,7 +23,7 @@ FILENAMES = 							\
 	gradient							\
 	main								\
 	utils								\
-
+	gauss								\
 
 SRCS = $(addprefix $(SRC_DIR), $(addsuffix .c, $(FILENAMES)))
 OBJS = $(addprefix $(BIN_DIR), $(addsuffix .o, $(FILENAMES)))

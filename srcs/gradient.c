@@ -1,22 +1,16 @@
 #include "../incl/gradient.h"
 #include "../incl/lerp.h"
 
-int glerp();
-
-int *gradient(int from, int to, int ncolors)
-{
-	int *grad;
+t_gradient create_gradient()
 	int i;
-
-	if (!(grad = calloc(ncolors + 1, sizeof(*grad))))
-		return NULL;
+	t_gradient grad;
 	
-	i = 0;
-	while (i < ncolors + 1)
-	{
-		// printf("div %d\n", (100 / (ncolors)) * i);
-		grad[i] = lerp(from, to, (100/ ncolors) * i);
-		i++;
-	}
+	grad.grad_lerp = calloc(1, sizeof(*grad.grad_lerp));
+
+	grad.grad_lerp[0].start = 0x000000FF;
+	grad.grad_lerp[0].end = 0x000000FF;
+	grad.grad_lerp[0].span_start = 0;
+	grad.grad_lerp[0].span_end = 1;
+
 	return grad;
 }
