@@ -2,13 +2,13 @@ NAME = gradient
 FLAGS =
 
 LERP_FILES = 		\
+		gauss		\
 		lerp		\
 
 SDT_FILES = 		\
 		SDT_init	\
-		SDT_render	\
 		SDT			\
-
+		utils		\
 
 INCLUDES = -I incl/ -I ~/.brew/include/
 LIB = -L ~/.brew/lib -l SDL2 -l sdl2_image
@@ -23,7 +23,7 @@ FILENAMES = 							\
 	gradient							\
 	main								\
 	utils								\
-	gauss								\
+			
 
 SRCS = $(addprefix $(SRC_DIR), $(addsuffix .c, $(FILENAMES)))
 OBJS = $(addprefix $(BIN_DIR), $(addsuffix .o, $(FILENAMES)))

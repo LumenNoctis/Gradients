@@ -1,37 +1,22 @@
-Uint32 getpixel(SDL_Surface *surface, int x, int y)
+#include "gradient.h"
+
+int			num_Scale(int input, int from_min, int from_max, int to_min, int to_max)
 {
-    int bpp = surface->format->BytesPerPixel;
-    /* Here p is the address to the pixel we want to retrieve */
-    Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * bpp;
+	int		result;
+	int		range;
+	double	tmp;
 
-switch (bpp)
-{
-    case 1:
-        return *p;
-        break;
+	range = (from_max - from_min);
 
-    case 2:
-        return *(Uint16 *)p;
-        break;
+	tmp = input - from_min;
+	tmp /= range;
+	tmp *= (to_max - to_min);
+	result = tmp + to_min;
 
-    case 3:
-        if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
-            return p[0] << 16 | p[1] << 8 | p[2];
-        else
-            return p[0] | p[1] << 8 | p[2] << 16;
-            break;
-
-        case 4:
-            return *(Uint32 *)p;
-            break;
-
-        default:
-            return 0;       /* shouldn't happen, but avoids warnings */
-      }
+	return result;
 }
 
-
-int blurr_pixel(int x,int y, gauss_matrix **matrix, int x_bound, int y_bound, )
+int blurr_pixel(int x,int y, gauss_matrix matrix, int x_bound, int y_bound)
 {
 	int x_low;
 	int x_high;
@@ -42,10 +27,10 @@ int blurr_pixel(int x,int y, gauss_matrix **matrix, int x_bound, int y_bound, )
 	int n;
 	double total;
 
-	x_low = max(x - m, 0);
-	y_low = max(y - n, 0);
-	x_high = min(x + m, x_bound);
-	y_high = min(y + n, y_bound);
+	x_low = MAX(x - matrix.w, 0);
+	y_low = MAX(y - matrix.h, 0);
+	x_high = MIN(x + matrix.w, x_bound);
+	y_high = MIN(y + matrix.h, y_bound);
 
 	total = 0;
 	i = y_low;
@@ -55,18 +40,18 @@ int blurr_pixel(int x,int y, gauss_matrix **matrix, int x_bound, int y_bound, )
 		n = x_low;
 		while(n < x_high)
 		{
-			total += 
+			total += 1;
 		}
 	}
-
+	return total / (matrix.w * matrix.h);
 }
 
-void blurr_texture(SDL_Rect area, gauss_matrix mat, SDL_Surface *surf,)
+void blurr_texture(SDL_Rect area, gauss_matrix mat, SDL_Surface *surf)
 {
 	int x;
 	int y;
 
-	Uint_32 pixel;
+	Uint32 pixel;
 	SDT_RGBA color;
 
 	x = area.x;
@@ -75,6 +60,7 @@ void blurr_texture(SDL_Rect area, gauss_matrix mat, SDL_Surface *surf,)
 	{
 		while (x < area.w + area.x)
 		{
+			y = 1;
 			//Dont forget to check for oob pixels
 			//Maybe blurr pixel function else this might be a very long function
 

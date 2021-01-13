@@ -1,4 +1,5 @@
 #include "../../incl/SDT.h"
+#include "../../incl/gradient.h"
 
 
 static void SDT_Exit(void)
@@ -26,7 +27,10 @@ void SDT_Init(SDT_Scene *scene)
 
 static void SDT_SetScene(SDT_Scene *scene)
 {
+	t_gradient grad;
+
 	SDT_Init(scene);
+	scene->tex = render_grad_texture(create_gradient(), NCOLORS, WIN_H, WIN_W);
 }
 
 SDT_Scene *SDT_GetScene()

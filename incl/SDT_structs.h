@@ -17,7 +17,7 @@
 
 typedef union       SDT_RGBA
 {
-	uint32_t		color;
+	int				color;
 	struct {
 		uint8_t 	r;
 		uint8_t 	g;
@@ -30,6 +30,7 @@ typedef struct
 {
     SDL_Window      *window;
     SDL_Renderer    *renderer;
-}               SDT_Scene;
+	SDL_Texture 	*tex;
+}               	SDT_Scene;
 
 # endif
