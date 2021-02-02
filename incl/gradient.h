@@ -11,7 +11,7 @@
 # define GAUSS_X_DIST 5
 # define GAUSS_Y_DIST 5
 # define SMOOTHNESS 100 //100 is default, this is the number of colors in a full gradient
-# define NCOLORS 	21 // Nuber of colors in the gradient 0 for full gradient -however many colors the screen can fit-
+# define NCOLORS 	0 // Number of colors in the gradient 0 for full gradient -however many colors the screen can fit-
 
 # define MAX(a,b) \
    ({ __typeof__ (a) _a = (a); \

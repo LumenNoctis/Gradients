@@ -63,7 +63,6 @@ void blurr_texture(SDL_Rect area, gauss_matrix mat, SDL_Surface *surf)
 			y = 1;
 			//Dont forget to check for oob pixels
 			//Maybe blurr pixel function else this might be a very long function
-
 		}
 	}
 }

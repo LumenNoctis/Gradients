@@ -6,19 +6,24 @@ t_gradient create_gradient()
 	int i;
 	t_gradient grad;
 
-	grad.ncolors = 2;
+	grad.ncolors = 1;
 
 	grad.g_lerp = calloc(grad.ncolors, sizeof(*grad.g_lerp));
 
-	grad.g_lerp[0].start = 0x000000FF;
-	grad.g_lerp[0].end = 0x00FF00FF;
+	grad.g_lerp[0].start = 0xFF0000FF;
+	grad.g_lerp[0].end = 0xFFFFFFFF;
 	grad.g_lerp[0].span_start = 0;
-	grad.g_lerp[0].span_end = .510;
+	grad.g_lerp[0].span_end = 1;
 
 	grad.g_lerp[1].start = 0x00FF00FF;
 	grad.g_lerp[1].end = 0xFF00FFFF;
-	grad.g_lerp[1].span_start = .500;
-	grad.g_lerp[1].span_end = 1;
+	grad.g_lerp[1].span_start = .200;
+	grad.g_lerp[1].span_end = .410;
+
+	//grad.g_lerp[2].start = 0xFF00FFFF;
+	//grad.g_lerp[2].end = 0xFFFF00FF;
+	//grad.g_lerp[2].span_start = .400;
+	//grad.g_lerp[2].span_end = 1;
 
 	return grad;
 }
@@ -78,7 +83,6 @@ SDL_Texture *render_grad_texture(t_gradient grad, int ncolors, int h, int w)
 				t = 0;
 			else
 				t = scale;
-			printf("i %d, t %d\n",i, t);
 			color.data.r = lerp(
 						(int)((SDT_RGBA)grad.g_lerp[i].start).data.r,
 						(int)((SDT_RGBA)grad.g_lerp[i].end).data.r,
@@ -99,6 +103,6 @@ SDL_Texture *render_grad_texture(t_gradient grad, int ncolors, int h, int w)
 	printf("Done\n");
 	result = SDL_CreateTextureFromSurface(renderer, surf);
 	// SDL_FreeSurface(surf);
-	//Add Blurr here
+	//use Gauss here
 	return result;
 }

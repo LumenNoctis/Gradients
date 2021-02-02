@@ -10,7 +10,7 @@ SDT_FILES = 		\
 		SDT			\
 		utils		\
 
-INCLUDES = -I incl/ -I ~/.brew/include/
+INCLUDES = -I incl/ -I ~/.brew/
 LIB = -L ~/.brew/lib -l SDL2 -l sdl2_image
 
 
