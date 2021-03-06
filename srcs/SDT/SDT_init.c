@@ -27,10 +27,17 @@ void SDT_Init(SDT_Scene *scene)
 
 static void SDT_SetScene(SDT_Scene *scene)
 {
-	t_gradient grad;
+	Grad_data *grad;
+	int ncolors;
 
+	ncolors = 2;
+	grad = calloc(ncolors, sizeof(*grad));
+	grad[0].color = 0x00000000;
+	grad[1].color = 0xFFFFFFFF;
+	grad[0].location = 0;
+	grad[1].location = 1;
 	SDT_Init(scene);
-	scene->tex = render_grad_texture(create_gradient(), NCOLORS, WIN_H, WIN_W);
+	scene->tex = render_grad_texture(create_gradient(grad, ncolors), NCOLORS, WIN_H, WIN_W);
 }
 
 SDT_Scene *SDT_GetScene()
