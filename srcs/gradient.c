@@ -52,23 +52,16 @@ SDL_Texture *render_grad_texture(Gradient grad, int amount, int h, int w)
 {
 	int p_start;
 	int p_end;
-	int scale;
-	int col;
 	int m;
 	int i;
 	int t;
 
 	Uint32 			converted_color;
-	Uint32 *arr;
 	
 	SDL_Rect		rect;
 	SDL_Texture 	*result;
 	SDL_Surface 	*surf;
 	SDL_Renderer 	*renderer;
-
-	gauss_curve curve;
-	gauss_matrix mat;
-
 
 	i = 0;
 	if (amount <= 0)
@@ -102,23 +95,6 @@ SDL_Texture *render_grad_texture(Gradient grad, int amount, int h, int w)
 		}
 		i++;
 	}
-	rect.x = 0;
-	rect.y += rect.h;
-	i = 0;
-	arr = GradArray_Get(amount, grad);
-	while (i < amount)
-	{
-		converted_color = arr[i];
-		converted_color = SDL_MapRGBA(surf->format,
-										converted_color >> 24,
-										converted_color >> 16,
-										converted_color >>  8,
-										255
-										);
-			SDL_FillRect(surf, &rect, converted_color);
-		rect.x += rect.w;
-		i++;
-	}
 	result = SDL_CreateTextureFromSurface(renderer, surf);
 	return result;
 }
@@ -126,7 +102,6 @@ SDL_Texture *render_grad_texture(Gradient grad, int amount, int h, int w)
 Uint32 *GradArray_Get(int amount, Gradient grad)
 {
 	int total;
-	int scale;
 	int start;
 	int end;
 	int i;
@@ -142,12 +117,12 @@ Uint32 *GradArray_Get(int amount, Gradient grad)
 	m = (amount * 2) / amount;
 
 	i = 0;
+	n = 0;
 	total = 0;
 	while (i + 1 < grad.ncolors)
 	{
 		start = grad.colors[i].location * (amount * 2);
 		end = grad.colors[i + 1].location * (amount * 2);
-		n = 0;
 		while (end >= n)
 		{
 			t = num_Scale(n, start, end, 0, SMOOTHNESS);
