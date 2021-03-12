@@ -11,8 +11,8 @@ SDT_FILES = 		\
 		utils		\
 
 INCLUDES = -I incl/ -I ~/.brew/
-LIB = -L ~/.brew/lib -l SDL2 -l sdl2_image
-
+LIB_DIR = libs/
+LIBRARIES = $(LIB_DIR)libSDL2.dylib $(LIB_DIR)libSDL2_ttf.dylib $(LIB_DIR)libSDL2_image.dylib
 
 SRC_DIR = srcs/
 BIN_DIR = bin/
@@ -32,7 +32,7 @@ OBJS = $(addprefix $(BIN_DIR), $(addsuffix .o, $(FILENAMES)))
 all: $(NAME)
 
 $(NAME):
-	gcc $(FLAGS) $(INCLUDES) -o $(NAME) $(SRCS) $(LIB)
+	gcc $(FLAGS) $(INCLUDES) -o $(NAME) $(SRCS) $(LIBRARIES)
 
 $(BIN_DIR):
 	mkdir -p $(BIN_DIR)

@@ -59,7 +59,7 @@ SDL_Texture *render_grad_texture(Gradient grad, int amount, int h, int w)
 	int t;
 
 	Uint32 			converted_color;
-	
+	Uint32 *arr;
 	
 	SDL_Rect		rect;
 	SDL_Texture 	*result;
@@ -71,7 +71,6 @@ SDL_Texture *render_grad_texture(Gradient grad, int amount, int h, int w)
 
 
 	i = 0;
-	// Sets the step amount, if <= 0 , display 1 color per pixel in screen width
 	if (amount <= 0)
 		m = 1;
 	else
@@ -81,15 +80,8 @@ SDL_Texture *render_grad_texture(Gradient grad, int amount, int h, int w)
 	rect.w = m;
 	rect.y = 0;
 	rect.x = 0;
-	// Using surface for more speed
 	surf = SDL_CreateRGBSurface(0, w, h, 32, 0, 0, 0, 0);
 	renderer = SDT_GetScene()->renderer;
-
-	// Gaussian blurr info
-	//curve.width = 3;
-	//curve.center = 0;
-	//curve.height = 5;
-	// create_gauss_matrix(curve, GAUSS_X_DIST, GAUSS_Y_DIST);
 
 	while (i + 1 < grad.ncolors)
 	{
@@ -105,10 +97,26 @@ SDL_Texture *render_grad_texture(Gradient grad, int amount, int h, int w)
 										converted_color >>  8,
 										255
 										);
-			//SDL_Log("Converted color %d \n", converted_color);
 			SDL_FillRect(surf, &rect, converted_color);
 			rect.x += m;
 		}
+		i++;
+	}
+	rect.x = 0;
+	rect.y += rect.h;
+	i = 0;
+	arr = GradArray_Get(amount, grad);
+	while (i < amount)
+	{
+		converted_color = arr[i];
+		converted_color = SDL_MapRGBA(surf->format,
+										converted_color >> 24,
+										converted_color >> 16,
+										converted_color >>  8,
+										255
+										);
+			SDL_FillRect(surf, &rect, converted_color);
+		rect.x += rect.w;
 		i++;
 	}
 	result = SDL_CreateTextureFromSurface(renderer, surf);
@@ -120,38 +128,34 @@ Uint32 *GradArray_Get(int amount, Gradient grad)
 	int scale;
 	int start;
 	int end;
-	int n;
 	int i;
 	int t;
+	int n;
 
 	double m;
-	double pos;
 	Uint32 *array;
 	Uint32 	color;
 
 
 	i = 0;
-	array = calloc(amount, sizeof(*array));
 	if (amount <= 0)
 		return NULL;
-	else
-		m = (double)1 / amount;
-
-	pos = 0;
+	array = calloc(amount, sizeof(*array));
+	m = (amount * 2) / amount;
 	n = 0;
+	int total;
+
+	total = 0;
 	while (i + 1 < grad.ncolors)
 	{
-		start = grad.colors[i + 0].location;
-		end	= grad.colors[i + 1].location;
-		while (end >= pos)
+		start = grad.colors[i].location * (amount * 2);
+		end = grad.colors[i + 1].location * (amount * 2);
+		while (end >= n)
 		{
-			if (n >= amount)
-				break ;
-			t = num_Scale(pos * 100, start * 100, end * 100, 0, SMOOTHNESS);
-			color = GradColor_Get(t, grad, i);
-			pos += m;
-			array[n] = color;
-			n++;
+			t = num_Scale(n, start, end, 0, SMOOTHNESS);
+			array[total] = GradColor_Get(t, grad, i);			
+			n += m;
+			total++;
 		}
 		i++;
 	}
