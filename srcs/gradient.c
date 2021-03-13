@@ -113,7 +113,7 @@ Uint32 *GradArray_Get(int amount, Gradient grad)
 
 	if (amount <= 0)
 		return NULL;
-	array = calloc(amount, sizeof(*array));
+	array = calloc(amount + 1, sizeof(*array));
 	m = (amount * 2) / amount;
 
 	i = 0;
@@ -125,6 +125,8 @@ Uint32 *GradArray_Get(int amount, Gradient grad)
 		end = grad.colors[i + 1].location * (amount * 2);
 		while (end >= n)
 		{
+			if (total > amount)
+				break ;
 			t = num_Scale(n, start, end, 0, SMOOTHNESS);
 			array[total] = GradColor_Get(t, grad, i);			
 			n += m;
